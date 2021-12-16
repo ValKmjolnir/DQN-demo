@@ -14,8 +14,6 @@ And use this command to test the model:
 
 > ./nasal test.nas
 
-Also, `system("cls")` in `map.nas` is used in windows powershell. Delete it or changing it to `system("clear")` if using Linux or MacOSX.
-
 ## What is Nasal?
 
 [Nasal](http://wiki.flightgear.org/Nasal_scripting_language) is a programming language used in famous flight simulator [FlightGear](https://www.flightgear.org/).It's quite simple and easy to learn and use.

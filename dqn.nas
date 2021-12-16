@@ -1,16 +1,13 @@
-import("lib.nas");
-import("map.nas");
-import("bp.nas");
+import("lib.nas"); # nasal lib
+import("map.nas"); # map module
+import("bp.nas");  # bp network
 
 rand(time(0));
-var bp=bp_gen();
+var bp=bp_gen();   # generate bp
+bp.init();         # init network
+bp.output_file();  # output network state to file
+
 var replay=[];
-var data_gen=func()
-{
-    bp.init();
-    bp.output_file();
-}
-var init_from_file=bp.init_from_file;
 var max=func(vec)
 {
     var maxnum=vec[0];
@@ -25,14 +22,10 @@ var training=func()
     var Qnext=0;
     # map gen
     var map=map_gen();
-
     # agent gen
-    var cord=[int(rand()*5),int(rand()*5)];
-    map.set(cord,1);
-
+    var cord=map.set_agent();
     # food cord
     map.set_food();
-
     for(var cnt=0;cnt<100;cnt+=1)
     {
         var state=map.state();
@@ -99,10 +92,10 @@ var auto=func(loop)
     }
     print('\rreplaying: ',size(replay),' avg step: ',size(replay)/loop,'\n');
     bp.output_file();
-    return;
+    return size(replay);
 }
-data_gen();
-init_from_file();
-for(var i=0;i<30;i+=1)
-    auto(100);
-#print('\n');
+
+while(auto(100)<=2000)
+    ; # training until replay has more than 2k states
+
+print("training finished!\n");

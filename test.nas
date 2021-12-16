@@ -1,29 +1,18 @@
-import("lib.nas");
-import("map.nas");
-import("bp.nas");
+import("lib.nas"); # nasal lib
+import("map.nas"); # map module
+import("bp.nas");  # bp network
 
 rand(time(0));
-var bp=bp_gen();
-bp.init_from_file();
-var max=func(vec)
-{
-    var maxnum=vec[0];
-    foreach(var n;vec)
-        if(maxnum<n)
-            maxnum=n;
-    return maxnum;
-}
+var bp=bp_gen();   # generate bp
+bp.init_from_file();# get network state from file
+
 var run=func()
 {
-    var step=0;
-    var score=0;
+    var (score,step)=(0,0);
     # map gen
     var map=map_gen();
-
     # agent gen
-    var cord=[int(rand()*5),int(rand()*5)];
-    map.set(cord,1);
-
+    var cord=map.set_agent();
     # food cord
     map.set_food();
 
@@ -32,6 +21,11 @@ var run=func()
         step+=1;
         var state=map.state();
         map.print();
+        if(score>=1000) # score 1000 to win the game
+        {
+            print("you win!\n");
+            break;
+        }
         var change=
         [
             [cord[0],cord[1]-1],
@@ -44,14 +38,14 @@ var run=func()
         var (move,maxnum)=(0,Q_val[0]);
         for(var i=0;i<4;i+=1)
             if(Q_val[i]>maxnum)
-            {
-                move=i;
-                maxnum=Q_val[i];
-            }
-        println(['w ','s ','a ','d '][move],' ',score);
+                (move,maxnum)=(i,Q_val[i]);
+        print(['w','s','a','d'][move],' ',score,'\n');
         
-        if(!map.score(change[move]))
+        if(!map.score(change[move])) # hit wall
+        {
+            print("hit\n");
             break;
+        }
         map.set(cord,0);
         cord=change[move];
         var val=map.get(cord);
@@ -65,4 +59,6 @@ var run=func()
     }
     return [score,step];
 }
-println(run());
+
+var (score,step)=run();
+print("score ",score," in ",step," step(s)\n");

@@ -1,3 +1,4 @@
+import("lib.nas");
 var exp=math.exp;
 var tanh=func(x)
 {
@@ -11,7 +12,7 @@ var sigmoid=func(x)
 var bp_gen=func()
 {
     var (alpha,gamma)=(0.5,0.8);
-    var (inum,hnum,onum)=(25,32,4);
+    var (inum,hnum,onum)=(2,2,4);
     var (input,hidden,output)=([],[],[]);
     setsize(input,inum);
     setsize(hidden,hnum);
