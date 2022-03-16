@@ -60,5 +60,6 @@ var run=func()
     return [score,step];
 }
 
+print("\ec");
 var (score,step)=run();
 print("score ",score," in ",step," step(s)\n");

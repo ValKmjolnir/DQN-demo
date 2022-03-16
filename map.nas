@@ -91,12 +91,8 @@ var map_gen=func()
         },
         print:func()
         {
-            if(!cmp(platform,"windows"))
-                system("cls");
-            elsif(!cmp(platform,"linux") or !cmp(platform,"macOS"))
-                system("clear");
             var ch=['  ','O ','* '];
-            var s=map_str;
+            var s="\e[0;0H"~map_str;
             for(var y=0;y<mapsize;y+=1)
             {
                 s~='|';
@@ -105,6 +101,7 @@ var map_gen=func()
                 s~='|\n';
             }
             print(s~map_str);
+            unix.sleep(1/100);
         }
     };
 }
