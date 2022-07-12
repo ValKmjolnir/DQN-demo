@@ -1,4 +1,3 @@
-import("lib.nas");
 var mapsize=5;
 var map_gen=func()
 {

@@ -1,6 +1,5 @@
-import("lib.nas"); # nasal lib
-import("map.nas"); # map module
-import("bp.nas");  # bp network
+import.map; # map module
+import.bp;  # bp network
 
 rand(time(0));
 var bp=bp_gen();   # generate bp

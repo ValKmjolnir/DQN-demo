@@ -1,4 +1,3 @@
-import("lib.nas");
 var exp=math.exp;
 var tanh=func(x)
 {

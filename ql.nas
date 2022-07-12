@@ -1,4 +1,3 @@
-import("lib.nas");
 # environment:
 # 1<->2
 # 1<->4
