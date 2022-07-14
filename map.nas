@@ -1,6 +1,5 @@
 var mapsize=5;
-var map_gen=func()
-{
+var map_gen=func(){
     var map_str="+";
     for(var i=0;i<mapsize;i+=1)
         map_str~="--";
@@ -17,8 +16,7 @@ var map_gen=func()
         for(var x=0;x<mapsize;x+=1)
             _[y][x]=0;
     }
-    return
-    {
+    return{
         set:func(cord,val){
             if(val==1)
                 (agent_x,agent_y)=cord;
@@ -27,8 +25,7 @@ var map_gen=func()
         get:func(cord){
             return _[cord[1]][cord[0]];
         },
-        state:func()
-        {
+        state:func(){
             var (x,y)=(agent_x-food_x,agent_y-food_y);
 
             if(x==0)   x=1;
@@ -64,8 +61,7 @@ var map_gen=func()
             # the example can be optimized as coordinates [2,2] and [0,2]
             # so the state is finally in this form
         },
-        score:func(cord)
-        {
+        score:func(cord){
             var (x,y)=cord;
             # wall  0
             if(x<0 or x>mapsize-1 or y<0 or y>mapsize-1)
@@ -73,27 +69,23 @@ var map_gen=func()
             # (0)road  1 (1)self  0 (-1)apple 1
             return [1,0,1][_[y][x]];
         },
-        set_agent:func()
-        {
+        set_agent:func(){
             (agent_x,agent_y)=(int(rand()*mapsize),int(rand()*mapsize));
             while(_[agent_y][agent_x]!=0)
                 (agent_x,agent_y)=(int(rand()*mapsize),int(rand()*mapsize));
             _[agent_y][agent_x]=1;
             return [agent_x,agent_y];
         },
-        set_food:func()
-        {
+        set_food:func(){
             (food_x,food_y)=(int(rand()*mapsize),int(rand()*mapsize));
             while(_[food_y][food_x]!=0)
                 (food_x,food_y)=(int(rand()*mapsize),int(rand()*mapsize));
             _[food_y][food_x]=-1;
         },
-        print:func()
-        {
+        print:func(){
             var ch=['  ','O ','* '];
             var s="\e[0;0H"~map_str;
-            for(var y=0;y<mapsize;y+=1)
-            {
+            for(var y=0;y<mapsize;y+=1){
                 s~='|';
                 for(var x=0;x<mapsize;x+=1)
                     s~=ch[_[y][x]];
