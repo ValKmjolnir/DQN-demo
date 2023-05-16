@@ -15,7 +15,7 @@ var bp_gen=func(){
     setsize(output,onum);
     return{
         init_from_file:func(){
-            var s=io.fin("agent.dat");
+            var s=io.readfile("agent.dat");
             s=split(' ',s);
             var index=0;
             for(var i=0;i<hnum;i+=1){
