@@ -1,8 +1,11 @@
 import.map; # map module
 import.bp;  # bp network
 
+var bp_gen = bp.bp_gen;
+var map_gen = map.map_gen;
+
 rand(time(0));
-var bp=bp_gen();   # generate bp
+var bp=bp.bp_gen();   # generate bp
 bp.init_from_file();# get network state from file
 
 var run=func(){
