@@ -6,13 +6,21 @@ Simple DQN demo using nasal programming language.
 
 DQN data will be stored in file: agent.dat
 
+## Requirements
+
+Nasal interpreter version 11.0. See [here](#what-is-nasal). Better use the version on branch master, or download latest zip.
+
+Need to add path of nasal interpreter to environment path. But i copy the `std` directory here so it could run correctly without adding path.
+
+## Execute
+
 Use this command to train the model:
 
-> ./nasal dqn.nas
+> nasal dqn.nas
 
 And use this command to test the model:
 
-> ./nasal test.nas
+> nasal test.nas
 
 ## What is Nasal?
 
