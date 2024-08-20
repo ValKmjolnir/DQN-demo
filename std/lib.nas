@@ -1,14 +1,6 @@
 # lib.nas
 # 2019 ValKmjolnir
 
-import.std.coroutine;
-import.std.math;
-import.std.string;
-import.std.io;
-import.std.os;
-import.std.bits;
-import.std.unix;
-
 # print is used to print all things in nasal, try and see how it works.
 # this function uses std::cout to output logs.
 var print = func(elems...) {
@@ -73,6 +65,10 @@ var int = func(val) {
 # which is less than or equal to this argument
 var floor = func(val) {
     return __floor(val);
+}
+
+var ceil = func(val) {
+    return __ceil(val);
 }
 
 # exit using std::exit
@@ -228,19 +224,21 @@ var println = func(elems...) {
 
 # sort function using quick sort
 # not very efficient... :(
-var sort = func(){
+var sort = func() {
     srand();  # be aware! this causes global changes
     var quick_sort_core = func(vec, left, right, cmp) {
-        if(left>=right) return nil;
+        if (left>=right) return nil;
         var base = left+int(rand()*(right-left));
         (vec[left], vec[base]) = (vec[base], vec[left]);
         var (i, j, tmp) = (left, right, vec[left]);
-        while(i<j){
-            while(i<j and cmp(tmp,vec[j]))
+        while(i<j) {
+            while(i<j and cmp(tmp,vec[j])) {
                 j -= 1;
+            }
             vec[i] = vec[j];
-            while(i<j and cmp(vec[i],tmp))
+            while(i<j and cmp(vec[i],tmp)) {
                 i += 1;
+            }
             vec[j] = vec[i];
             j -= 1;
         }
@@ -249,7 +247,7 @@ var sort = func(){
         quick_sort_core(vec, i+1, right, cmp);
         return nil;
     }
-    return func(vec, cmp = func(a, b) {return a<b;}){
+    return func(vec, cmp = func(a, b) {return a<b;}) {
         quick_sort_core(vec, 0, size(vec)-1, cmp);
         return nil;
     }
@@ -272,11 +270,18 @@ var isint = func(x) {
 }
 
 var isnum = func(x) {
-    return typeof(x)=="num" or !math.isnan(num(x));
+    if (typeof(x)=="num") {
+        return true;
+    }
+    x = num(x);
+    if (!__isnan(x) and x!=nil) {
+        return true;
+    }
+    return false;
 }
 
 var isscalar = func(s) {
-    var t=typeof(s);
+    var t = typeof(s);
     return (t=="num" or t=="str")? 1:0;
 }
 
@@ -293,25 +298,29 @@ var ghosttype = func(ghost_object) {
 }
 
 # get the index of val in the vec
-var vecindex = func(vec,val) {
-    forindex(var i;vec)
-        if(val==vec[i])
+var vecindex = func(vec, val) {
+    forindex(var i; vec) {
+        if (val==vec[i]) {
             return i;
+        }
+    }
     return nil;
 }
 
 # check if the object is an instance of the class
 var isa = func(object, class) {
     if (!ishash(object)) {
-        return 0;
+        return false;
     }
-    if(!contains(object, "parents") or !isvec(object.parents)) {
-        return 0;
+    if (!contains(object, "parents") or !isvec(object.parents)) {
+        return false;
     }
-    foreach(var elem;object.parents)
-        if(elem==class or isa(elem, class))
-            return 1;
-    return 0;
+    foreach(var elem; object.parents) {
+        if (elem==class or isa(elem, class)) {
+            return true;
+        }
+    }
+    return false;
 }
 
 # assert aborts when condition is not true
@@ -321,11 +330,20 @@ var assert = func(condition, message = "assertion failed!") {
 
 # get time stamp, this will return a timestamp object
 var maketimestamp = func() {
-    var t = 0;
+    var stamp = __maketimestamp();
+    var time_stamp = func(stamp) {
+        return __time_stamp(stamp);
+    }
+    var elapsed_millisecond = func(stamp) {
+        return __elapsed_millisecond(stamp);
+    }
+    var elapsed_microsecond = func(stamp) {
+        return __elapsed_microsecond(stamp);
+    }
     return {
-        stamp: func() {t = __millisec();},
-        elapsedMSec: func() {return __millisec()-t;},
-        elapsedUSec: func() {return (__millisec()-t)*1000;}
+        stamp: func() {return time_stamp(stamp);},
+        elapsedMSec: func() {return elapsed_millisecond(stamp);},
+        elapsedUSec: func() {return elapsed_microsecond(stamp);}
     };
 }
 
@@ -334,27 +352,9 @@ var md5 = func(str) {
     return __md5(str);
 }
 
-# get file status. using data from io.stat
-var fstat = func(filename) {
-    var s = io.stat(filename);
-    return {
-        st_dev: s[0],
-        st_ino: s[1],
-        st_mode: s[2],
-        st_nlink: s[3],
-        st_uid: s[4],
-        st_gid: s[5],
-        st_rdev: s[6],
-        st_size: s[7],
-        st_atime: s[8],
-        st_mtime: s[9],
-        st_ctime: s[10]
-    };
-}
-
 # important global constants
-var D2R = math.pi / 180;         # degree to radian
-var R2D = 180 / math.pi;         # radian to degree
+var D2R = 3.14159265358979323846264338327950288 / 180; # degree to radian
+var R2D = 180 / 3.14159265358979323846264338327950288; # radian to degree
 
 var FT2M = 0.3048;               # feet to meter
 var M2FT = 1 / FT2M;

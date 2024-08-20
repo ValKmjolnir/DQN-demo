@@ -1,3 +1,6 @@
+use std.os;
+use std.unix;
+
 var mapsize=5;
 var map_gen=func(){
     var map_str="+";

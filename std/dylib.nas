@@ -2,25 +2,12 @@
 # 2023 by ValKmjolnir
 # dylib is the core hashmap for developers to load their own library.
 # for safe using dynamic library, you could use 'module' in stl/module.nas
+use std.os;
+use std.io;
+use std.unix;
 
 # open dynamic lib. return a hash including dl pointer and function pointers
 var dlopen = func(libname) {
-    # find dynamic lib from local dir first
-    libname = (os.platform()=="windows"? ".\\":"./")~libname;
-    if(io.exists(libname))
-        return __dlopen(libname);
-    # find dynamic lib through PATH
-    var envpath = split(os.platform()=="windows"? ";":":",unix.getenv("PATH"));
-    # first find ./module
-    append(envpath, ".");
-    var path = os.platform()=="windows"? "\\module\\":"/module/";
-    foreach(var p;envpath) {
-        p ~= path~libname;
-        if(io.exists(p)) {
-            libname = p;
-            break;
-        }
-    }
     return __dlopen(libname);
 }
 
@@ -37,14 +24,14 @@ var dlcall = func(ptr, args...) {
 
 # get dlcall function with limited parameter list
 var limitcall = func(arg_size = 0) {
-    if(arg_size==0) {return func(ptr) {return __dlcall};}
-    elsif(arg_size==1) {return func(ptr, _0) {return __dlcall};}
-    elsif(arg_size==2) {return func(ptr, _0, _1) {return __dlcall};}
-    elsif(arg_size==3) {return func(ptr, _0, _1, _2) {return __dlcall};}
-    elsif(arg_size==4) {return func(ptr, _0, _1, _2, _3) {return __dlcall};}
-    elsif(arg_size==5) {return func(ptr, _0, _1, _2, _3, _4) {return __dlcall};}
-    elsif(arg_size==6) {return func(ptr, _0, _1, _2, _3, _4, _5) {return __dlcall};}
-    elsif(arg_size==7) {return func(ptr, _0, _1, _2, _3, _4, _5, _6) {return __dlcall};}
-    elsif(arg_size==8) {return func(ptr, _0, _1, _2, _3, _4, _5, _6, _7) {return __dlcall};}
+    if (arg_size==0) {return func(ptr) {return __dlcall};}
+    elsif (arg_size==1) {return func(ptr, _0) {return __dlcall};}
+    elsif (arg_size==2) {return func(ptr, _0, _1) {return __dlcall};}
+    elsif (arg_size==3) {return func(ptr, _0, _1, _2) {return __dlcall};}
+    elsif (arg_size==4) {return func(ptr, _0, _1, _2, _3) {return __dlcall};}
+    elsif (arg_size==5) {return func(ptr, _0, _1, _2, _3, _4) {return __dlcall};}
+    elsif (arg_size==6) {return func(ptr, _0, _1, _2, _3, _4, _5) {return __dlcall};}
+    elsif (arg_size==7) {return func(ptr, _0, _1, _2, _3, _4, _5, _6) {return __dlcall};}
+    elsif (arg_size==8) {return func(ptr, _0, _1, _2, _3, _4, _5, _6, _7) {return __dlcall};}
     else {return func(ptr, args...) {return __dlcallv};}
 }

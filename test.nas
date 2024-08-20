@@ -1,5 +1,5 @@
-import.map; # map module
-import.bp;  # bp network
+use map; # map module
+use bp;  # bp network
 
 var bp_gen = bp.bp_gen;
 var map_gen = map.map_gen;

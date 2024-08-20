@@ -2,13 +2,13 @@
 
 ## Description
 
-Simple DQN demo using nasal programming language.
+Simple DQN demo written in nasal programming language.
 
 DQN data will be stored in file: agent.dat
 
 ## Requirements
 
-Nasal interpreter version 11.0. See [here](#what-is-nasal). Better use the version on branch master, or download latest zip.
+Nasal interpreter version 11.2. See [here](#what-is-nasal). Better use the version on branch master, or download latest zip.
 
 Need to add path of nasal interpreter to environment path. But i copy the `std` directory here so it could run correctly without adding path.
 
@@ -23,6 +23,8 @@ And use this command to test the model:
 > nasal test.nas
 
 ## What is Nasal?
+
+[![logo](doc/nasal_transparent.svg)](https://github.com/ValKmjolnir/Nasal-Interpreter)
 
 [Nasal](http://wiki.flightgear.org/Nasal_scripting_language) is a programming language used in famous flight simulator [FlightGear](https://www.flightgear.org/).It's quite simple and easy to learn and use.
 

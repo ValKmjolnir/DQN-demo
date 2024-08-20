@@ -1,3 +1,6 @@
+use std.math;
+use std.io;
+
 var exp=math.exp;
 var tanh=func(x){
     var t=exp(2*x);
